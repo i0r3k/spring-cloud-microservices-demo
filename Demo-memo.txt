@@ -1,0 +1,120 @@
+=================================================================================
+Swagger
+
+
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.3.1</version>
+</dependency>	
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.3.1</version>
+</dependency>	
+
+@EnableSwagger2
+
+http://localhost:8080/swagger-ui.html
+
+=================================================================================
+Actuator
+
+management.security.enabled=false
+
+http://localhost:8080/actuator
+http://localhost:8080/beans
+http://localhost:8080/metrics
+
+=================================================================================
+Config Server
+
+@EnableConfigServer
+
+=================================================================================
+reservation service
+
+Web, H2, JPA, HATEOAS, Rest Repository, Config Client, Eureka Client, RabbitMQ stream, Zipkin client, Actuator
+
+http://localhost:9000/reservations
+
+curl -d{} http://localhost:9000/refresh
+
+@EnableBinding(ReservationChannels.class)
+@IntegrationComponentScan
+
+@Input
+SubscribableChannel input();
+
+@MessageEndpoint
+@ServiceActivator(inputChannel = "input")
+
+=================================================================================
+Eureka Server
+
+Eureka Server & Config Client
+
+@EnableEurekaServer
+
+http://localhost:8761/
+
+=================================================================================
+reservation client
+
+http://localhost:9988/reservations/names
+
+Web, Feign, Zuul, Ribbon, Config Client, Hystrix, RabbitMQ stream, Zipkin client, Actuator, Eureka Client, HATEOAS, Rest Repository
+
+@EnableFeignClients
+@EnableZuulProxy
+@EnableDiscoveryClient
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-rest</artifactId>
+</dependency>
+
+
+@EnableCircuitBreaker
+
+@EnableBinding(ReservationChannels.class)
+@IntegrationComponentScan
+
+@Output
+MessageChannel output();
+
+@MessagingGateway
+@Gateway(requestChannel = "output")
+
+curl -d'{"reservationName" : "Test" }' -H"content-type: application/json" http://localhost:9988/reservations
+
+curl -d'{"reservationName" : "Hello" }' -H"content-type: application/json" http://localhost:9988/reservations
+curl -d'{"reservationName" : "Thank you!" }' -H"content-type: application/json" http://localhost:9988/reservations
+
+
+=================================================================================
+Hystrix Dashboard
+
+Hystrix dashboard, Config Client, Eureka Client
+
+@EnableHystrixDashboard
+@EnableDiscoveryClient
+
+http://localhost:8010/hystrix.html
+http://localhost:9988/hystrix.stream
+
+
+=================================================================================
+Zipkin
+
+http://localhost:9411/
+
+Zipkin UI, Zipkin Stream, Config Client, Eureka Client, Rabbit Stream
+
+@EnableDiscoveryClient
+@EnableZipkinStreamServer
+
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
