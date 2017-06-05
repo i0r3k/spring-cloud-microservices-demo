@@ -31,6 +31,19 @@ Config Server
 
 @EnableConfigServer
 
+Cloud bus support:
+add these to service pom.xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+
+curl -d {} http://localhost:9000/bus/refresh
+
 =================================================================================
 reservation service
 
